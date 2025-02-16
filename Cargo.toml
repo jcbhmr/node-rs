@@ -1,11 +1,14 @@
 [package]
-name = "node-rs"
+name = "node2"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+name = "node"
+
 [dependencies]
 autocxx = "0.27.1"
-cxx = "1.0.140"
+cxx = { version = "1.0.140", features = ["c++20"] }
 
 [build-dependencies]
 autocxx-build = "0.27.1"

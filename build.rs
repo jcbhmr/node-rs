@@ -1,16 +1,22 @@
 use std::error::Error;
-use std::path::PathBuf;
 
 fn main() -> Result<(), Box<dyn Error>> {
-    let include_path = PathBuf::from("src");
-
-    // This assumes all your C++ bindings are in lib.rs
-    let mut b = autocxx_build::Builder::new("src/lib.rs", &[&include_path]).build()?;
-    b.flag_if_supported("-std=c++14")
-     .compile("autocxx-demo"); // arbitrary library name, pick anything
-    println!("cargo:rerun-if-changed=src/main.rs");
-
-    // Add instructions to link to any C++ libraries you need.
-
+    let mut b = autocxx_build::Builder::new(
+        "src/lib.rs",
+        &[
+            "./node/deps/openssl/config/",
+            "./node/deps/openssl/openssl/include/",
+            "./node/deps/uv/include/",
+            "./node/deps/v8/include/",
+            "./node/deps/zlib/",
+            "./node/src/",
+        ],
+    )
+    .extra_clang_args(&["-std=c++20"])
+    .build()?;
+    b.flag_if_supported("-std=c++20").compile("node");
+    println!("cargo::rerun-if-changed=./src/lib.rs");
+    println!("cargo::rustc-link-search=native=./node/out/Release");
+    println!("cargo::rustc-link-lib=dylib=node");
     Ok(())
 }
