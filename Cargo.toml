@@ -1,0 +1,11 @@
+[package]
+name = "node-rs"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+autocxx = "0.27.1"
+cxx = "1.0.140"
+
+[build-dependencies]
+autocxx-build = "0.27.1"
